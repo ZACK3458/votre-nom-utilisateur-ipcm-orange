@@ -34,6 +34,21 @@ document.addEventListener('DOMContentLoaded', function () {
 		btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
 	})();
 
+	// Online/Offline badge updater
+	(function(){
+		var badge = document.getElementById('offlineBadge');
+		if (!badge) return;
+		function update() {
+			var online = navigator.onLine;
+			badge.textContent = online ? 'En ligne' : 'Hors-ligne';
+			badge.classList.toggle('bg-success', online);
+			badge.classList.toggle('bg-danger', !online);
+		}
+		window.addEventListener('online', update);
+		window.addEventListener('offline', update);
+		update();
+	})();
+
 	// Print header datetime
 	(function(){
 		var el = document.getElementById('printDatetime');

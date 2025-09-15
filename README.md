@@ -8,6 +8,7 @@ Application IPCM (IP Capacity Management) 100% hors‑ligne, sans base de donné
 - Tableau de bord premium (KPI, donut santé, timeline d’alertes, trafic, dark mode persistant)
 - Interfaces: recherche/filtre/tri/export CSV côté client, compteurs visible/total
 - Reporting: export CSV, impression avec en‑tête/pied dédiés, mini‑graphique
+- Inventaire: CRUD hors‑ligne (persisté en JSON), exports CSV/XLSX
 - Prédictif: régression linéaire pure Python (aucune dépendance lourde)
 - Architecture: topologie SVG interactive (couches L2/L3/MPLS)
 - Accessibilité: attributs ARIA, gestion du clavier et états persistants
@@ -17,6 +18,7 @@ Application IPCM (IP Capacity Management) 100% hors‑ligne, sans base de donné
 2. (Optionnel) Créer un venv et l’activer
 3. Installer les dépendances: voir `requirements.txt`
 4. Lancer l’application: `python run.py` (ou `./run_dev.ps1` sous Windows)
+5. Mode dev autonome (serveur + tests automatiques): `./dev_loop.ps1`
 
 L’application sert les fichiers statiques locaux; aucune connexion réseau n’est requise à l’exécution.
 
@@ -27,6 +29,14 @@ Exécuter la suite de tests unitaires:
 ## Endpoints de santé et métriques
 - Santé: `GET /healthz` → `{ "status": "ok" }`
 - Métriques: `GET /metrics` → `{ service, version, uptime_s, routes_count, status }`
+
+## Inventaire (hors‑ligne)
+- Persistance JSON: par défaut `data/inventory.json` (override via env `IPCM_INVENTORY_PATH`).
+- Routes: `GET /inventory` (UI), `POST /inventory/add`, `PATCH /inventory/<id>`, `DELETE /inventory/<id>`
+- Exports: `GET /inventory/export.csv`, `GET /inventory/export.xlsx` (si openpyxl dispo)
+
+## DevX
+- VS Code Tasks: Run Tests, Run App, Run Flask (venv), Dev Loop (server+tests)
 
 ## Documentation
 - Cahier des charges et directives: `.github/copilot-instructions.md`

@@ -1,7 +1,15 @@
 
-from flask import render_template, redirect, url_for, send_from_directory, jsonify
+from flask import render_template, redirect, url_for, send_from_directory, jsonify, request, Response
 import time
 from app import app
+from app.inventory.store import load_inventory, add_equipment, update_equipment, delete_equipment
+import csv
+from io import StringIO
+try:
+    import openpyxl
+    from openpyxl.workbook import Workbook
+except Exception:  # keep offline even if openpyxl missing
+    openpyxl = None
 
 @app.route('/favicon.ico')
 def favicon():
@@ -13,7 +21,55 @@ def users():
 
 @app.route('/inventory')
 def inventory():
-    return render_template('roadmap/roadmap.html')
+    items = load_inventory()
+    return render_template('inventory.html', items=items)
+
+@app.route('/inventory/add', methods=['POST'])
+def inventory_add():
+    data = request.get_json(silent=True) or request.form.to_dict()
+    eq = add_equipment(data)
+    return jsonify(eq), 201
+
+@app.route('/inventory/<int:equip_id>', methods=['PATCH'])
+def inventory_update(equip_id: int):
+    changes = request.get_json(silent=True) or request.form.to_dict()
+    ok = update_equipment(equip_id, changes)
+    return jsonify({'updated': ok}), (200 if ok else 404)
+
+@app.route('/inventory/<int:equip_id>', methods=['DELETE'])
+def inventory_delete(equip_id: int):
+    ok = delete_equipment(equip_id)
+    return jsonify({'deleted': ok}), (200 if ok else 404)
+
+@app.route('/inventory/export.csv')
+def inventory_export_csv():
+    items = load_inventory()
+    si = StringIO()
+    writer = csv.DictWriter(si, fieldnames=[
+        'id','name','type','brand','model','software_version','ip_address','location','support_status','modules'
+    ])
+    writer.writeheader()
+    for it in items:
+        writer.writerow({k: it.get(k, '') for k in writer.fieldnames})
+    output = si.getvalue()
+    return Response(output, mimetype='text/csv', headers={'Content-Disposition': 'attachment; filename="inventory.csv"'})
+
+@app.route('/inventory/export.xlsx')
+def inventory_export_xlsx():
+    if openpyxl is None:
+        return jsonify({'error': 'export xlsx indisponible (openpyxl manquant)'}), 503
+    items = load_inventory()
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    headers = ['id','name','type','brand','model','software_version','ip_address','location','support_status','modules']
+    ws.append(headers)
+    for it in items:
+        ws.append([it.get(k, '') for k in headers])
+    from io import BytesIO
+    bio = BytesIO()
+    wb.save(bio)
+    bio.seek(0)
+    return Response(bio.read(), mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers={'Content-Disposition': 'attachment; filename="inventory.xlsx"'})
 
 @app.route('/snmp')
 def snmp():
