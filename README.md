@@ -16,13 +16,17 @@ Application IPCM (IP Capacity Management) 100% hors‑ligne, sans base de donné
 1. Cloner le dépôt
 2. (Optionnel) Créer un venv et l’activer
 3. Installer les dépendances: voir `requirements.txt`
-4. Lancer l’application: `python run.py`
+4. Lancer l’application: `python run.py` (ou `./run_dev.ps1` sous Windows)
 
 L’application sert les fichiers statiques locaux; aucune connexion réseau n’est requise à l’exécution.
 
 ## Tests
 Exécuter la suite de tests unitaires:
 - `python -m unittest discover -s tests -v`
+
+## Endpoints de santé et métriques
+- Santé: `GET /healthz` → `{ "status": "ok" }`
+- Métriques: `GET /metrics` → `{ service, version, uptime_s, routes_count, status }`
 
 ## Documentation
 - Cahier des charges et directives: `.github/copilot-instructions.md`

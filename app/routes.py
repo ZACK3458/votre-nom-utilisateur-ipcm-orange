@@ -1,5 +1,6 @@
 
 from flask import render_template, redirect, url_for, send_from_directory, jsonify
+import time
 from app import app
 
 @app.route('/favicon.ico')
@@ -87,6 +88,19 @@ def healthz():
     Retourne un JSON minimal indiquant le bon fonctionnement.
     """
     return jsonify(status='ok'), 200
+
+@app.route('/metrics')
+def metrics():
+    """Expose des métriques basiques pour supervision/light observability."""
+    uptime = time.time() - getattr(app, 'start_time', time.time())
+    routes_count = len(app.url_map._rules)
+    return jsonify({
+        'service': app.config.get('SERVICE_NAME', 'ipcm'),
+        'version': app.config.get('VERSION', '0.0.0'),
+        'uptime_s': round(uptime, 3),
+        'routes_count': routes_count,
+        'status': 'ok'
+    }), 200
 
 # Extra routes referenced by navbar
 @app.route('/precablage')

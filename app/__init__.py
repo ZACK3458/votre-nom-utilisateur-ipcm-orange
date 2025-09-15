@@ -1,5 +1,6 @@
 
 from flask import Flask
+import time
 
 from flask_login import LoginManager
 
@@ -9,6 +10,11 @@ app.config['SECRET_KEY'] = 'change_this_secret_key'
 # db = SQLAlchemy(app)
 
 login_manager = LoginManager(app)
+
+# Metadata and runtime context
+app.config['SERVICE_NAME'] = 'ipcm-orange-offline'
+app.config['VERSION'] = '0.1.0'
+app.start_time = time.time()
 
 # Utilisateur simulé pour le mode hors-ligne
 class FakeUser:
@@ -30,6 +36,8 @@ def load_user(user_id):
 
 
 from . import routes
+# Enregistre les gestionnaires d'erreurs (404/500)
+from . import errors
 
 if __name__ == '__main__':
     app.run(debug=True)
