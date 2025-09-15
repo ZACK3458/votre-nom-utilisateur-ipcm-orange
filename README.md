@@ -32,6 +32,17 @@ Application IPCM (IP Capacity Management) 100% hors‑ligne, sans base de donné
 
 	docker-compose up --build
 
+### Publication automatique sur DockerHub
+
+Un workflow GitHub Actions (`.github/workflows/publish-image.yml`) peut publier automatiquement l'image Docker vers DockerHub lorsque vous push sur `main` ou créez un tag `v*`.
+
+Pour activer la publication automatique, ajoutez les secrets suivants dans les Settings → Secrets du repository :
+
+- `DOCKERHUB_USERNAME` : votre nom d'utilisateur DockerHub
+- `DOCKERHUB_TOKEN` : un token d'accès DockerHub (ou mot de passe)
+
+Le workflow utilisera ces secrets pour se connecter et pousser les tags `latest` et `${{ github.sha }}`.
+
 ### Tests et CI
 
 - Lancer les tests localement (PowerShell):
