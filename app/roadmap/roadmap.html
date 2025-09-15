@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Roadmap Equipements</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+        {% import 'navbar.html' as nav %}
+        {{ nav.navbar(current_user) }}
+    <div class="container mt-4">
+        <h2>Roadmap Equipements</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Constructeur</th>
+                    <th>Type</th>
+                    <th>Modèle</th>
+                    <th>Région</th>
+                    <th>Ville</th>
+                    <th>Site</th>
+                    <th>Baie</th>
+                    <th>Domaine</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Cisco</td>
+                    <td>Routeur</td>
+                    <td>ASR9000</td>
+                    <td>Centre</td>
+                    <td>Yaoundé</td>
+                    <td>Site A</td>
+                    <td>Baie 1</td>
+                    <td>Transport</td>
+                </tr>
+                <tr>
+                    <td>Huawei</td>
+                    <td>Switch</td>
+                    <td>S5720</td>
+                    <td>Littoral</td>
+                    <td>Douala</td>
+                    <td>Site B</td>
+                    <td>Baie 2</td>
+                    <td>Accès</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

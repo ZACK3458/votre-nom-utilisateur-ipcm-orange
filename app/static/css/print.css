@@ -1,0 +1,23 @@
+/* Print-friendly styles */
+@media print {
+  /* Page setup */
+  @page { margin: 12mm; }
+  body { background: #fff !important; color: #000 !important; }
+  .navbar, .quick-actions, footer, .no-print { display: none !important; }
+  .print-only { display: block !important; }
+  .card, .glass { box-shadow: none !important; border: 1px solid #ddd !important; background: #fff !important; }
+  a[href]:after { content: "" !important; }
+  /* Improve table readability */
+  table { border-collapse: collapse !important; width: 100% !important; }
+  th, td { border: 1px solid #aaa !important; padding: 6px 8px !important; }
+  thead th { background: #f3f3f3 !important; }
+
+  /* Page numbers (best effort; not all UAs support this syntax) */
+  body { counter-reset: page; }
+  .print-only .page-numbers::after { content: "Page " counter(page); }
+}
+
+/* Screen-only helpers */
+@media screen {
+  .print-only { display: none; }
+}

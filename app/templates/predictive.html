@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Prédictif{% endblock %}
+{% block content %}
+<div class="container py-5 animate__animated animate__fadeIn">
+  <div class="row mb-4">
+    <div class="col-12 text-center">
+      <h1 class="display-4 fw-bold text-orange"><i class="bi bi-graph-up-arrow text-orange"></i> Analyse Prédictive</h1>
+      <p class="lead">Anticipation des tendances et alertes réseau.</p>
+    </div>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-orange text-white fw-bold">Tendances</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><i class="bi bi-arrow-up-right text-success"></i> Hausse du trafic</li>
+          <li class="list-group-item"><i class="bi bi-arrow-down-right text-danger"></i> Baisse de disponibilité</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-orange text-white fw-bold">Alertes prédictives</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><i class="bi bi-exclamation-triangle text-warning"></i> Risque de saturation</li>
+          <li class="list-group-item"><i class="bi bi-exclamation-triangle text-warning"></i> Maintenance préventive recommandée</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

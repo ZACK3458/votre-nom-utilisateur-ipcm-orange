@@ -1,0 +1,1 @@
+This folder previously included a CDN-based dashboard.html which has been removed to keep the project fully offline. Use app/templates/dashboard.html via Flask rendering instead.

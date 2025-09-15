@@ -1,0 +1,29 @@
+{% macro navbar(current_user) %}
+<nav class="navbar navbar-expand-lg navbar-light glass mb-4 shadow">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold text-orange" href="/dashboard">IPCM - Orange Cameroun</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="/roadmap">Roadmap Equipements</a></li>
+        <li class="nav-item"><a class="nav-link" href="/interfaces">Statistiques Interfaces</a></li>
+        <li class="nav-item"><a class="nav-link" href="/user-space">Mon Espace Utilisateur</a></li>
+        <li class="nav-item"><a class="nav-link" href="/service">Gestion Du Service</a></li>
+        <li class="nav-item"><a class="nav-link" href="/precablage">Gestion Du Précablage</a></li>
+        <li class="nav-item"><a class="nav-link" href="/plan-adressage">Plan d'adressage</a></li>
+        <li class="nav-item"><a class="nav-link" href="/architecture">Architecture</a></li>
+        <li class="nav-item"><a class="nav-link" href="/journal">Journal D'activité</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin-data">Administration Données</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="/logout">Déconnexion</a></li>
+      </ul>
+      <div class="d-flex align-items-center gap-2 ms-3">
+  <button id="themeToggle" class="btn btn-outline-orange btn-sm" title="Mode sombre (touche D)" aria-pressed="false"><i class="bi bi-moon-stars"></i></button>
+        <span class="navbar-text fw-bold">{{ current_user.username if current_user else 'Invité' }}</span>
+      </div>
+    </div>
+  </div>
+</nav>
+{% endmacro %}

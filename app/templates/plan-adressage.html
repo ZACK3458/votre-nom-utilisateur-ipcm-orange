@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Plan d'adressage{% endblock %}
+{% block content %}
+<div class="container py-5 animate__animated animate__fadeIn">
+  <div class="row mb-4">
+    <div class="col-12 text-center">
+      <h1 class="display-4 fw-bold text-orange"><i class="bi bi-diagram-2 text-orange"></i> Plan d'adressage</h1>
+      <p class="lead">Visualisation du schéma d’adressage du réseau.</p>
+    </div>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-orange text-white fw-bold">Adresses IP principales</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><i class="bi bi-pc-display text-orange"></i> 192.168.1.1 (Routeur)</li>
+          <li class="list-group-item"><i class="bi bi-pc-display text-orange"></i> 192.168.1.2 (Switch)</li>
+          <li class="list-group-item"><i class="bi bi-pc-display text-orange"></i> 192.168.1.3 (Firewall)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-orange text-white fw-bold">Sous-réseaux</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><i class="bi bi-diagram-2 text-orange"></i> 192.168.1.0/24</li>
+          <li class="list-group-item"><i class="bi bi-diagram-2 text-orange"></i> 192.168.2.0/24</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

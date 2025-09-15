@@ -1,0 +1,22 @@
+/* Interfaces page polish */
+#ifTable tbody tr:hover { background: rgba(255, 121, 0, 0.06); }
+#ifTable tbody tr:hover { background: rgba(255, 121, 0, 0.06); }
+#ifTable thead th { user-select: none; }
+#ifTable thead th[aria-sort="asc"] i,
+#ifTable thead th[aria-sort="desc"] i { color: var(--orange); opacity: 1 !important; }
+
+/* Generic sortable tables */
+table thead th { user-select: none; }
+table thead th[aria-sort="asc"] i,
+table thead th[aria-sort="desc"] i { color: var(--orange); opacity: 1 !important; }
+canvas.spark { vertical-align: middle; margin-left: .25rem; }
+
+/* Dashboard timeline */
+.timeline { position: relative; }
+.timeline .tl-item { position: relative; padding-left: 1.5rem; margin-bottom: .5rem; }
+.timeline .tl-dot { position: absolute; left: 0; top: .4rem; width: .6rem; height: .6rem; border-radius: 50%; display: inline-block; }
+
+/* KPI cards */
+.card .h3 { font-weight: 800; }
+.card .text-muted.small { letter-spacing: .3px; }
+.glass canvas#healthDonut { max-width: 220px; height: auto; }

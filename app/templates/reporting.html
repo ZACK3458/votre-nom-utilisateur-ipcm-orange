@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block title %}Reporting{% endblock %}
+{% block content %}
+<div class="container animate__animated animate__fadeIn">
+  <div class="card glass p-4 mb-3">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+      <div>
+        <h2 class="mb-0"><i class="bi bi-file-earmark-bar-graph"></i> Reporting</h2>
+        <small class="text-muted">Rapports réseau – recherche, tri, export</small>
+      </div>
+      <div class="d-flex gap-2">
+        <input id="repSearch" type="search" class="form-control" placeholder="Rechercher (rapport, période)">
+        <select id="repType" class="form-select">
+          <option value="">Tous types</option>
+          <option value="cap">Capacité</option>
+          <option value="sla">SLA</option>
+          <option value="inc">Incidents</option>
+        </select>
+  <button id="repReset" class="btn btn-outline-orange no-print" title="Réinitialiser"><i class="bi bi-arrow-counterclockwise"></i></button>
+        <button id="repExport" class="btn btn-outline-orange"><i class="bi bi-download"></i> Export CSV</button>
+  <button id="repPrint" class="btn btn-orange no-print"><i class="bi bi-printer"></i> Imprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-8">
+      <div class="card glass p-0">
+        <div class="table-responsive p-3">
+          <table id="repTable" class="table align-middle">
+            <thead>
+              <tr>
+                <th scope="col" data-sort="name" aria-sort="none">Rapport <i class="bi bi-arrow-down-up small opacity-50"></i></th>
+                <th scope="col" data-sort="type" aria-sort="none">Type <i class="bi bi-arrow-down-up small opacity-50"></i></th>
+                <th scope="col" data-sort="period" aria-sort="none">Période <i class="bi bi-arrow-down-up small opacity-50"></i></th>
+                <th scope="col" data-sort="size" aria-sort="none">Taille (Ko) <i class="bi bi-arrow-down-up small opacity-50"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><i class="bi bi-bar-chart-line text-orange"></i> Capacité – Hebdo</td>
+                <td><span class="badge bg-primary">cap</span></td>
+                <td>Sem. 36</td>
+                <td><span class="num">420</span></td>
+              </tr>
+              <tr>
+                <td><i class="bi bi-graph-up text-orange"></i> SLA – Mensuel</td>
+                <td><span class="badge bg-success">sla</span></td>
+                <td>Août</td>
+                <td><span class="num">980</span></td>
+              </tr>
+              <tr>
+                <td><i class="bi bi-lightning text-orange"></i> Incidents – Hebdo</td>
+                <td><span class="badge bg-danger">inc</span></td>
+                <td>Sem. 36</td>
+                <td><span class="num">310</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-4">
+      <div class="card glass p-3">
+        <h6 class="mb-2"><i class="bi bi-activity"></i> Charge moyenne</h6>
+        <canvas id="repMini" height="120"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+  (function(){
+    var el = document.getElementById('repMini');
+    if (!el) return;
+    new Chart(el.getContext('2d'), {
+      type: 'bar',
+      data: { labels: ['Lun','Mar','Mer','Jeu','Ven'], datasets: [{ data: [12,15,13,18,16], backgroundColor: 'rgba(255,121,0,0.6)' }] },
+      options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    });
+  })();
+
+  (function enhanceReporting(){
+    var table = document.getElementById('repTable'); if (!table) return;
+    var tbody = table.querySelector('tbody'); var rows = Array.from(tbody.querySelectorAll('tr'));
+    var search = document.getElementById('repSearch'); var type = document.getElementById('repType');
+  var resetBtn = document.getElementById('repReset'); var exportBtn = document.getElementById('repExport'); var printBtn = document.getElementById('repPrint');
+    function norm(t){ return (t||'').toString().toLowerCase(); }
+    function apply(){
+      var q = norm(search && search.value); var ty = (type && type.value)||''; var vis = 0;
+      rows.forEach(function(tr){
+        var name = norm(tr.children[0].textContent); var ttype = norm(tr.children[1].textContent);
+        var show = (!q || name.includes(q)) && (!ty || ttype.includes(ty));
+        tr.style.display = show ? '' : 'none'; if (show) vis++;
+      });
+    }
+    if (search) search.addEventListener('input', apply);
+    if (type) type.addEventListener('change', apply);
+    apply();
+
+    var sortDir = {};
+    table.querySelectorAll('thead th[data-sort]').forEach(function(th){
+      th.style.cursor = 'pointer';
+      th.addEventListener('click', function(){
+        var key = th.getAttribute('data-sort'); sortDir[key] = sortDir[key]==='asc' ? 'desc' : 'asc'; var dir = sortDir[key];
+        table.querySelectorAll('thead th[data-sort]').forEach(function(oth){ oth.setAttribute('aria-sort','none'); });
+        th.setAttribute('aria-sort', dir);
+        rows.sort(function(a,b){
+          function val(tr){
+            if (key==='name') return tr.children[0].textContent.trim();
+            if (key==='type') return tr.children[1].textContent.trim();
+            if (key==='period') return tr.children[2].textContent.trim();
+            if (key==='size') return parseFloat(tr.children[3].querySelector('.num').textContent)||0;
+            return '';
+          }
+          var va = val(a), vb = val(b);
+          if (typeof va === 'number' && typeof vb === 'number') return dir==='asc'? va - vb : vb - va;
+          return dir==='asc'? String(va).localeCompare(String(vb)) : String(vb).localeCompare(String(va));
+        });
+        rows.forEach(function(tr){ tbody.appendChild(tr); });
+      });
+    });
+
+    function toCSV(t){ return '"'+t.replace(/"/g,'""')+'"'; }
+    function exportCSV(){
+      var lines=[]; var headers = Array.from(table.querySelectorAll('thead th')).map(function(th){return th.textContent.trim();});
+      lines.push(headers.join(','));
+      rows.forEach(function(tr){ if (tr.style.display==='none') return; var cells = Array.from(tr.children).map(function(td,i){
+        if (i===3){ var n = td.querySelector('.num'); return n? n.textContent.trim() : td.textContent.trim(); }
+        return td.textContent.trim();
+      }); lines.push(cells.map(toCSV).join(',')); });
+      var blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'}); var url = URL.createObjectURL(blob);
+      var a = document.createElement('a'); a.href=url; a.download='reporting.csv'; a.click(); setTimeout(function(){URL.revokeObjectURL(url);},1000);
+    }
+    if (resetBtn) resetBtn.addEventListener('click', function(e){ e.preventDefault(); if (search) search.value=''; if (type) type.value=''; apply(); });
+    if (exportBtn) exportBtn.addEventListener('click', exportCSV);
+    if (printBtn) printBtn.addEventListener('click', function(){ window.print(); });
+  })();
+</script>
+{% endblock %}

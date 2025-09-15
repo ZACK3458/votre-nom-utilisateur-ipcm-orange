@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Feuille de route{% endblock %}
+{% block content %}
+<div class="container py-5 animate__animated animate__fadeIn">
+  <div class="row mb-4">
+    <div class="col-12 text-center">
+      <h1 class="display-4 fw-bold text-orange"><i class="bi bi-map text-orange"></i> Feuille de route IPCM</h1>
+      <p class="lead">Suivi des étapes clés et jalons du projet.</p>
+    </div>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-orange text-white fw-bold">Étapes principales</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Analyse des besoins</li>
+          <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Conception technique</li>
+          <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Développement</li>
+          <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Tests & Validation</li>
+          <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Déploiement</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-orange text-white fw-bold">Jalons</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><i class="bi bi-calendar-event text-orange"></i> 01/09/2025 - Démarrage</li>
+          <li class="list-group-item"><i class="bi bi-calendar-event text-orange"></i> 15/09/2025 - Prototype</li>
+          <li class="list-group-item"><i class="bi bi-calendar-event text-orange"></i> 01/10/2025 - Recette</li>
+          <li class="list-group-item"><i class="bi bi-calendar-event text-orange"></i> 15/10/2025 - Mise en production</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

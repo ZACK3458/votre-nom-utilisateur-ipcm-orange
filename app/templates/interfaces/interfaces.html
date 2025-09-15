@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}Statistiques Interfaces{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row g-4">
+    <div class="col-12">
+      <div class="card glass p-4">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+          <div>
+            <h2 class="mb-0 d-flex align-items-center gap-2"><i class="bi bi-diagram-3"></i> Statistiques des Interfaces <span id="ifCount" class="badge bg-orange">0/0</span></h2>
+            <small class="text-muted">Vue consolidée (simulée, hors‑ligne)</small>
+          </div>
+          <div class="d-flex gap-2">
+            <input id="ifSearch" type="search" class="form-control" placeholder="Rechercher (équipement, interface)">
+            <select id="ifStatus" class="form-select">
+              <option value="">Tous les états</option>
+              <option value="UP">UP</option>
+              <option value="DOWN">DOWN</option>
+            </select>
+            <button id="ifReset" class="btn btn-outline-orange" title="Réinitialiser"><i class="bi bi-arrow-counterclockwise"></i></button>
+            <button id="ifExport" class="btn btn-outline-orange"><i class="bi bi-download"></i> Export CSV</button>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table id="ifTable" class="table align-middle">
+            <thead>
+              <tr>
+                <th scope="col" data-sort="equip" aria-sort="none">Equipement <i class="bi bi-arrow-down-up small opacity-50"></i></th>
+                <th scope="col" data-sort="iface" aria-sort="none">Interface <i class="bi bi-arrow-down-up small opacity-50"></i></th>
+                <th scope="col" data-sort="state" aria-sort="none">Etat <i class="bi bi-arrow-down-up small opacity-50"></i></th>
+                <th scope="col" data-sort="throughput" aria-sort="none">Débit (Mbps) <i class="bi bi-arrow-down-up small opacity-50"></i></th>
+                <th scope="col" data-sort="errors" aria-sort="none">Erreurs <i class="bi bi-arrow-down-up small opacity-50"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Router01</td>
+                <td>Gig0/1</td>
+                <td><span class="badge bg-success">UP</span></td>
+                <td><span class="num">940</span> <canvas class="spark" width="60" height="24" data-points="820,880,900,940"></canvas></td>
+                <td><span class="num">0</span></td>
+              </tr>
+              <tr>
+                <td>Switch02</td>
+                <td>Gig0/2</td>
+                <td><span class="badge bg-secondary">DOWN</span></td>
+                <td><span class="num">0</span></td>
+                <td><span class="num">0</span></td>
+              </tr>
+              <tr>
+                <td>Firewall03</td>
+                <td>Eth1/1</td>
+                <td><span class="badge bg-success">UP</span></td>
+                <td><span class="num">620</span> <canvas class="spark" width="60" height="24" data-points="480,520,610,620"></canvas></td>
+                <td><span class="num">2</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <div class="card glass p-4">
+        <h5 class="mb-3"><i class="bi bi-activity"></i> Evolution du trafic</h5>
+        <canvas id="ifTraffic"></canvas>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <div class="card glass p-4">
+        <h5 class="mb-3"><i class="bi bi-exclamation-triangle"></i> Alertes récentes</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Switch02 Gig0/2: lien down (10:24)</li>
+          <li class="list-group-item">Firewall03 Eth1/1: CRC élevés (09:58)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const ctx = document.getElementById('ifTraffic');
+  if (ctx) {
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['J-6','J-5','J-4','J-3','J-2','J-1','J'],
+        datasets: [{
+          label: 'Mb/s',
+          data: [420,530,480,610,550,590,640],
+          borderColor: '#ff7900',
+          backgroundColor: 'rgba(255,121,0,0.15)',
+          tension: 0.35,
+          fill: true
+        }]
+      },
+      options: {
+        plugins: { legend: { display: true } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
+</script>
+{% endblock %}

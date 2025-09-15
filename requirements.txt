@@ -1,0 +1,3 @@
+# Fichier d'exemple requirements.txt
+flask
+flask-login

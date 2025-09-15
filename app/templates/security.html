@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Sécurité{% endblock %}
+{% block content %}
+<div class="container py-5 animate__animated animate__fadeIn">
+  <div class="row mb-4">
+    <div class="col-12 text-center">
+      <h1 class="display-4 fw-bold text-orange"><i class="bi bi-shield-lock text-orange"></i> Sécurité Réseau</h1>
+      <p class="lead">Contrôle d’accès, alertes et sauvegardes.</p>
+    </div>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-orange text-white fw-bold">Contrôles d’accès</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><i class="bi bi-person-check text-success"></i> Authentification forte</li>
+          <li class="list-group-item"><i class="bi bi-person-x text-danger"></i> Gestion des permissions</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-orange text-white fw-bold">Sauvegardes & Alertes</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><i class="bi bi-cloud-arrow-down text-orange"></i> Sauvegarde automatique</li>
+          <li class="list-group-item"><i class="bi bi-bell text-warning"></i> Alertes sécurité</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

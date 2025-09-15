@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="row g-4 align-items-stretch">
+    <!-- Health donut and KPIs -->
+    <div class="col-12 col-lg-4">
+        <div class="card glass p-4 h-100 d-flex flex-column justify-content-center align-items-center">
+            <h5 class="mb-3"><i class="bi bi-heart-pulse"></i> Santé réseau</h5>
+            <canvas id="healthDonut" width="200" height="200"></canvas>
+            <div class="mt-2 text-muted small">Capacité: 72% saine • Incidents: 3</div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-8">
+        <div class="row g-4">
+            <div class="col-12 col-md-4">
+                <div class="card glass p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small">Équipements</div>
+                            <div class="h3 m-0">{{ equipments|length }}</div>
+                        </div>
+                        <i class="bi bi-hdd-network fs-2 text-orange"></i>
+                    </div>
+                    <canvas class="spark" width="100" height="28" data-points="12,14,13,15,14,16,17"></canvas>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card glass p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small">Interfaces</div>
+                            <div class="h3 m-0">{{ interfaces|length }}</div>
+                        </div>
+                        <i class="bi bi-diagram-3 fs-2 text-orange"></i>
+                    </div>
+                    <canvas class="spark" width="100" height="28" data-points="320,340,330,360,355,370,380"></canvas>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card glass p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small">Utilisateurs</div>
+                            <div class="h3 m-0">{{ users|length }}</div>
+                        </div>
+                        <i class="bi bi-people fs-2 text-orange"></i>
+                    </div>
+                    <canvas class="spark" width="100" height="28" data-points="2,3,3,4,3,4,5"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Inventory and alerts -->
+<div class="row g-4 mt-1">
+    <div class="col-12 col-lg-6">
+        <div class="card glass">
+            <div class="card-header d-flex justify-content-between align-items-center fw-bold">
+              <span><i class="bi bi-hdd-network"></i> Inventaire des équipements</span>
+              <button id="invExport" class="btn btn-sm btn-outline-orange no-print" title="Exporter CSV"><i class="bi bi-download"></i> Export</button>
+            </div>
+            <ul id="invList" class="list-group list-group-flush">
+                {% for eq in equipments %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-hdd-network text-orange"></i> {{ eq.name }}</span>
+                    <span class="badge bg-secondary">{{ eq.type }}</span>
+                    <span class="text-muted">{{ eq.ip_address }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="card glass">
+            <div class="card-header fw-bold"><i class="bi bi-lightning-charge"></i> Alertes récentes</div>
+            <div class="p-3">
+                <div class="timeline">
+                    <div class="tl-item"><span class="tl-dot bg-danger"></span> Lien Backbone-01 DOWN <span class="text-muted small">10:24</span></div>
+                    <div class="tl-item"><span class="tl-dot bg-warning"></span> CRC élevés sur Eth1/1 <span class="text-muted small">09:58</span></div>
+                    <div class="tl-item"><span class="tl-dot bg-info"></span> Maintenance planifiée Rtr‑Core <span class="text-muted small">08:10</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Traffic area chart -->
+<div class="row g-4 mt-1">
+    <div class="col-12">
+        <div class="card glass">
+            <div class="card-header fw-bold"><i class="bi bi-graph-up"></i> Trafic hebdomadaire</div>
+            <div class="card-body">
+                <canvas id="networkChart" height="120"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Extra KPIs -->
+<div class="row g-4 mt-1">
+    <div class="col-12 col-md-4">
+        <div class="card glass p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-muted small">Uptime global</div>
+                    <div class="h3 m-0">99.95%</div>
+                </div>
+                <i class="bi bi-shield-check fs-2 text-orange"></i>
+            </div>
+            <canvas class="spark" width="100" height="28" data-points="99.9,99.92,99.93,99.96,99.95,99.97,99.95"></canvas>
+        </div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="card glass p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-muted small">Alertes critiques</div>
+                    <div class="h3 m-0">3</div>
+                </div>
+                <i class="bi bi-exclamation-octagon fs-2 text-orange"></i>
+            </div>
+            <canvas class="spark" width="100" height="28" data-points="2,3,1,4,3,2,3"></canvas>
+        </div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="card glass p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-muted small">Capacité utilisée</div>
+                    <div class="h3 m-0">68%</div>
+                </div>
+                <i class="bi bi-speedometer2 fs-2 text-orange"></i>
+            </div>
+            <canvas class="spark" width="100" height="28" data-points="54,57,60,63,65,66,68"></canvas>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+(function(){
+    var btn = document.getElementById('invExport');
+    var list = document.getElementById('invList');
+    if (!btn || !list) return;
+    function toCSV(t){ return '"' + String(t||'').replace(/"/g,'""') + '"'; }
+    btn.addEventListener('click', function(){
+        var rows = Array.from(list.querySelectorAll('li.list-group-item'));
+        var lines = [];
+        lines.push(['Nom','Type','IP'].join(','));
+        rows.forEach(function(li){
+            var cols = li.children;
+            var nom = cols[0] ? cols[0].textContent.replace(/^[^\s]*\s*/,'').trim() : '';
+            var type = cols[1] ? cols[1].textContent.trim() : '';
+            var ip = cols[2] ? cols[2].textContent.trim() : '';
+            lines.push([toCSV(nom), toCSV(type), toCSV(ip)].join(','));
+        });
+        var blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a'); a.href = url; a.download = 'inventaire.csv'; a.click();
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 800);
+    });
+})();
+</script>
+{% endblock %}
