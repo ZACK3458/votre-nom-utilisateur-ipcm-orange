@@ -29,22 +29,26 @@
     <table class="table align-middle" id="invTable">
       <thead>
         <tr>
-          <th>ID</th><th>Nom</th><th>Type</th><th>Marque</th><th>Modèle</th><th>IP</th><th>Localisation</th><th>Actions</th>
+          <th><input type="checkbox" id="selectAll" aria-label="Tout sélectionner"></th>
+          <th>ID</th><th>Nom</th><th>Type</th><th>Marque</th><th>Modèle</th><th>IP</th><th>Localisation</th><th>Support</th><th>Modules</th><th>Actions</th>
         </tr>
       </thead>
       <tbody>
       {% for it in items %}
         <tr data-id="{{it.id}}">
+          <td><input type="checkbox" class="rowSelect" aria-label="Sélectionner équipement {{it.id}}"></td>
           <td>{{it.id}}</td>
-          <td contenteditable="true">{{it.name}}</td>
-          <td contenteditable="true">{{it.type}}</td>
-          <td contenteditable="true">{{it.brand}}</td>
-          <td contenteditable="true">{{it.model}}</td>
-          <td contenteditable="true">{{it.ip_address}}</td>
-          <td contenteditable="true">{{it.location}}</td>
+          <td contenteditable="true" aria-label="Nom">{{it.name}}</td>
+          <td contenteditable="true" aria-label="Type">{{it.type}}</td>
+          <td contenteditable="true" aria-label="Marque">{{it.brand}}</td>
+          <td contenteditable="true" aria-label="Modèle">{{it.model}}</td>
+          <td contenteditable="true" aria-label="IP">{{it.ip_address}}</td>
+          <td contenteditable="true" aria-label="Localisation">{{it.location}}</td>
+          <td contenteditable="true" aria-label="Support">{{it.support_status}}</td>
+          <td contenteditable="true" aria-label="Modules">{{it.modules}}</td>
           <td>
-            <button class="btn btn-sm btn-outline-orange save"><i class="bi bi-save"></i></button>
-            <button class="btn btn-sm btn-outline-danger delete"><i class="bi bi-trash"></i></button>
+            <button class="btn btn-sm btn-outline-orange save" title="Enregistrer" aria-label="Enregistrer"><i class="bi bi-save"></i></button>
+            <button class="btn btn-sm btn-outline-danger delete" title="Supprimer" aria-label="Supprimer"><i class="bi bi-trash"></i></button>
           </td>
         </tr>
       {% endfor %}

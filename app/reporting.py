@@ -1,49 +1,59 @@
 """
 Module de reporting hors-ligne (sans base de données ni dépendances externes).
 
-export_inventory_to_excel(filepath):
-- Génère un fichier tabulaire minimal à l'emplacement donné.
-- Utilise des données simulées afin d'être 100% offline-first.
-- Le format écrit est CSV simple, indépendamment de l'extension fournie.
-  Cela suffit pour les tests unitaires et peut être ouvert par Excel.
+Fonctions :
+- export_inventory_to_excel(filepath): Génère un fichier tabulaire minimal à l'emplacement donné.
+  Utilise des données simulées pour garantir le mode offline.
+  Le format écrit est CSV simple, compatible Excel.
 """
 
 from datetime import datetime
 
 
+NOM = 'Nom'
+TYPE = 'Type'
+MARQUE = 'Marque'
+MODELE = 'Modèle'
+VERSION_LOGICIEL = 'Version Logiciel'
+IP = 'IP'
+LOCALISATION = 'Localisation'
+SUPPORT = 'Support'
+MODULES = 'Modules'
+
 SIMULATED_EQUIPMENTS = [
     {
-        'Nom': 'Router01',
-        'Type': 'Routeur',
-        'Marque': 'Cisco',
-        'Modèle': 'ASR1001-X',
-        'Version Logiciel': '16.12',
-        'IP': '192.168.1.1',
-        'Localisation': 'DC Yaoundé',
-        'Support': 'Actif',
-        'Modules': 'SFP-10Gx2'
+        NOM: 'Router01',
+        TYPE: 'Routeur',
+        MARQUE: 'Cisco',
+        MODELE: 'ASR1001-X',
+        VERSION_LOGICIEL: '16.12',
+        IP: '192.168.1.1',
+        LOCALISATION: 'DC Yaoundé',
+        SUPPORT: 'Actif',
+        MODULES: 'SFP-10Gx2'
     },
     {
-        'Nom': 'Switch02',
-        'Type': 'Switch',
-        'Marque': 'Cisco',
-        'Modèle': 'C9300',
-        'Version Logiciel': '17.9',
-        'IP': '192.168.1.2',
-        'Localisation': 'DC Douala',
-        'Support': 'Actif',
-        'Modules': 'STK-2'
+        NOM: 'Switch02',
+        TYPE: 'Switch',
+        MARQUE: 'Cisco',
+        MODELE: 'C9300',
+        VERSION_LOGICIEL: '17.9',
+        IP: '192.168.1.2',
+        LOCALISATION: 'DC Douala',
+        SUPPORT: 'Actif',
+        MODULES: 'STK-2'
     },
 ]
 
 
 def export_inventory_to_excel(filepath: str) -> None:
-    """Écrit un fichier CSV (séparateur virgule) avec l'inventaire simulé.
-
-    Paramètres:
-        filepath: Chemin de sortie (extension libre; .xlsx accepté mais contenu CSV).
     """
-    headers = ['Nom', 'Type', 'Marque', 'Modèle', 'Version Logiciel', 'IP', 'Localisation', 'Support', 'Modules']
+    Écrit un fichier CSV (séparateur virgule) avec l'inventaire simulé.
+
+    Args:
+        filepath (str): Chemin de sortie (extension libre; .xlsx accepté mais contenu CSV).
+    """
+    headers = [NOM, TYPE, MARQUE, MODELE, VERSION_LOGICIEL, IP, LOCALISATION, SUPPORT, MODULES]
     def to_csv_cell(text: str) -> str:
         t = str(text) if text is not None else ''
         return '"' + t.replace('"', '""') + '"'

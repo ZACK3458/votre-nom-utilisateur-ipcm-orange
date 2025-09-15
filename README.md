@@ -1,5 +1,7 @@
 # votre-nom-utilisateur-ipcm-orange
 
+![CI](https://github.com/ZACK3458/votre-nom-utilisateur-ipcm-orange/actions/workflows/ci.yml/badge.svg)
+
 Application IPCM (IP Capacity Management) 100% hors‑ligne, sans base de données, construite avec Flask pour Orange Cameroun. Tous les assets (Bootstrap, icônes, Chart.js) sont embarqués localement pour fonctionner sans Internet.
 
 ## Fonctionnalités clés

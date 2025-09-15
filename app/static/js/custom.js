@@ -1,17 +1,17 @@
 // Minimal navbar toggler without bootstrap.js
 document.addEventListener('DOMContentLoaded', function () {
-	var toggler = document.querySelector('[data-bs-toggle="collapse"]');
-	var target = document.querySelector('#navbarNav');
+	const toggler = document.querySelector('[data-bs-toggle="collapse"]');
+	const target = document.querySelector('#navbarNav');
 	if (toggler && target) {
 		toggler.addEventListener('click', function () {
 			target.classList.toggle('show');
-			var expanded = toggler.getAttribute('aria-expanded') === 'true';
+			const expanded = toggler.getAttribute('aria-expanded') === 'true';
 			toggler.setAttribute('aria-expanded', (!expanded).toString());
 		});
 	}
 
 	// Active link highlight in navbar based on current path
-	var path = window.location.pathname;
+	const path = window.location.pathname;
 	document.querySelectorAll('.navbar .nav-link').forEach(function (link) {
 		if (link.getAttribute('href') === path) {
 			link.classList.add('active');
@@ -20,26 +20,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// Dark mode toggle (press "D" or add a button later)
 	try {
-		var savedTheme = localStorage.getItem('theme');
+		const savedTheme = localStorage.getItem('theme');
 		if (savedTheme === 'dark') {
 			document.body.classList.add('dark');
 		}
-	} catch (e) {}
+	} catch (e) { console.error(e); }
 
 	// Sync aria-pressed on theme toggle with saved theme
 	(function(){
-		var btn = document.getElementById('themeToggle');
+		const btn = document.getElementById('themeToggle');
 		if (!btn) return;
-		var isDark = document.body.classList.contains('dark');
+		const isDark = document.body.classList.contains('dark');
 		btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
 	})();
 
 	// Online/Offline badge updater
 	(function(){
-		var badge = document.getElementById('offlineBadge');
+		const badge = document.getElementById('offlineBadge');
 		if (!badge) return;
 		function update() {
-			var online = navigator.onLine;
+			const online = navigator.onLine;
 			badge.textContent = online ? 'En ligne' : 'Hors-ligne';
 			badge.classList.toggle('bg-success', online);
 			badge.classList.toggle('bg-danger', !online);
@@ -51,13 +51,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// Print header datetime
 	(function(){
-		var el = document.getElementById('printDatetime');
+		const el = document.getElementById('printDatetime');
 		if (!el) return;
 		try {
-			var now = new Date();
-			var fmt = now.toLocaleString();
+			const now = new Date();
+			const fmt = now.toLocaleString();
 			el.textContent = 'Imprimé le ' + fmt;
-		} catch(e) {}
+		} catch(e) { console.error(e); }
 	})();
 
 	document.addEventListener('keydown', function (e) {
@@ -65,27 +65,27 @@ document.addEventListener('DOMContentLoaded', function () {
 			document.body.classList.toggle('dark');
 			try {
 				localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-			} catch (e) {}
+			} catch (e) { console.error(e); }
 		}
 	});
 
-		var btn = document.getElementById('themeToggle');
-		if (btn) {
-			btn.addEventListener('click', function () {
-				document.body.classList.toggle('dark');
-				var pressed = btn.getAttribute('aria-pressed') === 'true';
-				btn.setAttribute('aria-pressed', (!pressed).toString());
-				try {
-					localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-				} catch (e) {}
-			});
-		}
+	const btn = document.getElementById('themeToggle');
+	if (btn) {
+		btn.addEventListener('click', function () {
+			document.body.classList.toggle('dark');
+			const pressed = btn.getAttribute('aria-pressed') === 'true';
+			btn.setAttribute('aria-pressed', (!pressed).toString());
+			try {
+				localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+			} catch (e) { console.error(e); }
+		});
+	}
 
 	// Global sparkline renderer (any canvas.spark on any page)
 	function renderSpark(el) {
 		try {
-			var ctx = el.getContext('2d');
-			var points = (el.getAttribute('data-points') || '').split(',').map(function (v) { return parseFloat(v) || 0; });
+			const ctx = el.getContext('2d');
+			const points = (el.getAttribute('data-points') || '').split(',').map(function (v) { return parseFloat(v) || 0; });
 			if (!points.length) return;
 			new Chart(ctx, {
 				type: 'line',
@@ -95,55 +95,55 @@ document.addEventListener('DOMContentLoaded', function () {
 				},
 				options: { responsive: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false } } }
 			});
-		} catch (e) {}
+		} catch (e) { console.error(e); }
 	}
 	document.querySelectorAll('canvas.spark').forEach(renderSpark);
 
 	// Interfaces page enhancements: search, filter, sort
 	(function enhanceInterfaces() {
-		var table = document.getElementById('ifTable');
+		const table = document.getElementById('ifTable');
 		if (!table) return;
-		var tbody = table.querySelector('tbody');
-		var rows = Array.from(tbody.querySelectorAll('tr'));
-		var search = document.getElementById('ifSearch');
-		var status = document.getElementById('ifStatus');
-	var exportBtn = document.getElementById('ifExport');
-	var resetBtn = document.getElementById('ifReset');
+		const tbody = table.querySelector('tbody');
+		const rows = Array.from(tbody.querySelectorAll('tr'));
+		const search = document.getElementById('ifSearch');
+		const status = document.getElementById('ifStatus');
+		const exportBtn = document.getElementById('ifExport');
+		const resetBtn = document.getElementById('ifReset');
 
 		function normalize(text) { return (text || '').toString().toLowerCase(); }
 		function getStateBadgeText(cell) {
-			var t = cell.textContent.trim().toUpperCase();
+			const t = cell.textContent.trim().toUpperCase();
 			if (t.includes('UP')) return 'UP';
 			if (t.includes('DOWN')) return 'DOWN';
 			return t;
 		}
 		function applyFilters() {
-			var q = normalize(search && search.value);
-			var st = (status && status.value) || '';
-			var visible = 0;
+			const q = normalize(search?.value);
+			const st = status?.value || '';
+			let visible = 0;
 			rows.forEach(function (tr) {
-				var cols = tr.children;
-				var equip = normalize(cols[0].textContent);
-				var iface = normalize(cols[1].textContent);
-				var state = getStateBadgeText(cols[2]);
-				var matchText = !q || equip.includes(q) || iface.includes(q);
-				var matchState = !st || state === st;
-				var show = (matchText && matchState);
+				const cols = tr.children;
+				const equip = normalize(cols[0].textContent);
+				const iface = normalize(cols[1].textContent);
+				const state = getStateBadgeText(cols[2]);
+				const matchText = !q || equip.includes(q) || iface.includes(q);
+				const matchState = !st || state === st;
+				const show = (matchText && matchState);
 				tr.style.display = show ? '' : 'none';
 				if (show) visible++;
 
 				// Threshold badges: high throughput or errors
-				var thrCell = cols[3]; var errCell = cols[4];
+				const thrCell = cols[3]; const errCell = cols[4];
 				if (thrCell) {
-					var thr = parseFloat(thrCell.querySelector('.num')?.textContent) || 0;
+					const thr = parseFloat(thrCell.querySelector('.num')?.textContent) || 0;
 					thrCell.classList.toggle('table-warning', thr >= 900);
 				}
 				if (errCell) {
-					var errs = parseFloat(errCell.querySelector('.num')?.textContent) || 0;
+					const errs = parseFloat(errCell.querySelector('.num')?.textContent) || 0;
 					errCell.classList.toggle('table-danger', errs >= 10);
 				}
 			});
-			var badge = document.getElementById('ifCount');
+			const badge = document.getElementById('ifCount');
 			if (badge) badge.textContent = visible + '/' + rows.length;
 		}
 		if (search) search.addEventListener('input', applyFilters);
@@ -151,13 +151,13 @@ document.addEventListener('DOMContentLoaded', function () {
 		applyFilters();
 
 		// Sorting by clicking on headers
-		var sortDir = {};
-	table.querySelectorAll('thead th[data-sort]').forEach(function (th, idx) {
+		const sortDir = {};
+		table.querySelectorAll('thead th[data-sort]').forEach(function (th, idx) {
 			th.style.cursor = 'pointer';
 			th.addEventListener('click', function () {
-				var key = th.getAttribute('data-sort');
+				const key = th.getAttribute('data-sort');
 				sortDir[key] = sortDir[key] === 'asc' ? 'desc' : 'asc';
-				var dir = sortDir[key];
+				const dir = sortDir[key];
 		// aria-sort update
 		table.querySelectorAll('thead th[data-sort]').forEach(function (oth) { oth.setAttribute('aria-sort', 'none'); });
 		th.setAttribute('aria-sort', dir);

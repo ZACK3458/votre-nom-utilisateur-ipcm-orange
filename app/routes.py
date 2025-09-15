@@ -1,3 +1,8 @@
+"""
+Routes principales de l'application IPCM Orange Cameroun (offline, sans base de données).
+Chaque route correspond à une fonctionnalité du cahier des charges : dashboard, inventaire, reporting, sécurité, etc.
+Toutes les données sont simulées ou stockées localement (JSON, CSV, XLSX).
+"""
 
 from flask import render_template, redirect, url_for, send_from_directory, jsonify, request, Response
 import time
@@ -79,9 +84,21 @@ def snmp():
 def dashboard():
     # Données simulées pour le frontend IPCM
     equipments = [
-        {'name': 'Router01', 'type': 'Routeur', 'ip_address': '192.168.1.1'},
-        {'name': 'Switch02', 'type': 'Switch', 'ip_address': '192.168.1.2'},
-        {'name': 'Firewall03', 'type': 'Firewall', 'ip_address': '192.168.1.3'}
+        {
+            'name': 'Router01', 'type': 'Routeur', 'brand': 'Cisco', 'model': 'ASR9001',
+            'software_version': 'IOS XR 6.5.3', 'ip_address': '192.168.1.1', 'location': 'Datacenter Douala',
+            'support_status': 'EoS 2027', 'modules': 'SPA-1X10GE, SPA-8X1GE'
+        },
+        {
+            'name': 'Switch02', 'type': 'Switch', 'brand': 'Juniper', 'model': 'EX4300',
+            'software_version': 'Junos 20.4R3', 'ip_address': '192.168.1.2', 'location': 'Backbone Yaoundé',
+            'support_status': 'Support actif', 'modules': 'EX-UM-4X4SFP'
+        },
+        {
+            'name': 'Firewall03', 'type': 'Firewall', 'brand': 'Fortinet', 'model': 'FG-100F',
+            'software_version': 'FortiOS 7.2.2', 'ip_address': '192.168.1.3', 'location': 'Cœur Internet',
+            'support_status': 'EoS 2025', 'modules': 'FG-100F-POE'
+        }
     ]
     users = [
         {'username': 'admin', 'role': 'Administrateur'},

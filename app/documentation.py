@@ -1,5 +1,6 @@
 """
-Module de documentation technique IPCM
+Module de documentation technique IPCM Orange Cameroun (offline).
+Contient la documentation technique et la liste des modules IPCM.
 """
 DOC = '''
 IPCM - Interface de Pilotage et de Contrôle des Modules

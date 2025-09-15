@@ -1,6 +1,5 @@
 """Blueprint Dashboard (offline, sans base de données).
-
-Fournit la route /dashboard via un blueprint, utilisant des données simulées.
+Fournit la route /dashboard via un blueprint, utilisant des données simulées pour IPCM Orange Cameroun.
 """
 from flask import Blueprint, render_template
 
@@ -9,6 +8,11 @@ dashboard_bp = Blueprint('dashboard', __name__)
 
 @dashboard_bp.route('/dashboard')
 def dashboard():
+    """
+    Affiche le dashboard principal avec équipements, utilisateurs et interfaces simulés.
+    Returns:
+        template dashboard.html avec données simulées.
+    """
     equipments = [
         {'name': 'Router01', 'type': 'Routeur', 'ip_address': '192.168.1.1'},
         {'name': 'Switch02', 'type': 'Switch', 'ip_address': '192.168.1.2'},

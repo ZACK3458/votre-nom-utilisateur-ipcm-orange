@@ -1,7 +1,5 @@
 """Collecte SNMP hors-ligne et tolérante aux dépendances.
-
-Si pysnmp n'est pas disponible, la fonction retourne None afin de rester
-compatible avec l'exécution offline et les tests unitaires.
+Permet la collecte SNMP offline, avec fallback si pysnmp absent.
 """
 
 try:
@@ -14,6 +12,17 @@ except Exception:  # ImportError ou autre
 
 
 def collect_interface_data(ip, community, oid):
+    """
+    Collecte les données SNMP d'une interface réseau.
+
+    Args:
+        ip (str): Adresse IP cible.
+        community (str): Communauté SNMP.
+        oid (str): OID SNMP à interroger.
+
+    Returns:
+        dict | None: Résultat SNMP ou None si offline/fallback.
+    """
     if not _HAS_PYSNMP:
         # Offline fallback
         return None
@@ -24,10 +33,10 @@ def collect_interface_data(ip, community, oid):
         ContextData(),
         ObjectType(ObjectIdentity(oid))
     )
-    for (errorIndication, errorStatus, errorIndex, varBinds) in iterator:
-        if errorIndication:
+    for (error_indication, error_status, error_index, var_binds) in iterator:
+        if error_indication:
             return None
-        elif errorStatus:
+        elif error_status:
             return None
         else:
-            return {str(name): str(val) for name, val in varBinds}
+            return {str(name): str(val) for name, val in var_binds}

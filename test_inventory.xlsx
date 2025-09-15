@@ -1,4 +1,4 @@
-# IPCM Export Inventaire - 2025-09-15T11:49:13
+# IPCM Export Inventaire - 2025-09-15T14:23:22
 Nom,Type,Marque,Modèle,Version Logiciel,IP,Localisation,Support,Modules
 "Router01","Routeur","Cisco","ASR1001-X","16.12","192.168.1.1","DC Yaoundé","Actif","SFP-10Gx2"
 "Switch02","Switch","Cisco","C9300","17.9","192.168.1.2","DC Douala","Actif","STK-2"
