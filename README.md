@@ -22,6 +22,24 @@ Application IPCM (IP Capacity Management) 100% hors‑ligne, sans base de donné
 4. Lancer l’application: `python run.py` (ou `./run_dev.ps1` sous Windows)
 5. Mode dev autonome (serveur + tests automatiques): `./dev_loop.ps1`
 
+### Exécution via Docker
+
+- Construire l'image localement:
+
+	docker build -t ipcm-app:latest .
+
+- Lancer avec docker-compose:
+
+	docker-compose up --build
+
+### Tests et CI
+
+- Lancer les tests localement (PowerShell):
+
+	./run_tests.ps1
+
+- La CI exécute les tests, le lint (si `requirements-dev.txt` inclut `flake8`) et génère un rapport de couverture si `coverage` est présent.
+
 L’application sert les fichiers statiques locaux; aucune connexion réseau n’est requise à l’exécution.
 
 ## Tests
