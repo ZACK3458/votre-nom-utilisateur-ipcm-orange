@@ -1,5 +1,5 @@
 
-from flask import render_template, redirect, url_for, send_from_directory
+from flask import render_template, redirect, url_for, send_from_directory, jsonify
 from app import app
 
 @app.route('/favicon.ico')
@@ -80,6 +80,13 @@ def plan_adressage():
 @app.route('/architecture')
 def architecture():
     return render_template('architecture.html')
+
+@app.route('/healthz')
+def healthz():
+    """Endpoint de santé simple pour les probes/monitoring.
+    Retourne un JSON minimal indiquant le bon fonctionnement.
+    """
+    return jsonify(status='ok'), 200
 
 # Extra routes referenced by navbar
 @app.route('/precablage')
