@@ -1,0 +1,30 @@
+{
+  "name": "github-motivational-agent",
+  "version": "1.0.0",
+  "description": "Agent motivationnel automatisé pour événements GitHub qui envoie des messages d'encouragement",
+  "main": ".github/scripts/motivational-agent.js",
+  "scripts": {
+    "test": "node .github/scripts/test-motivational-agent.js",
+    "motivate": "node .github/scripts/motivational-agent.js"
+  },
+  "keywords": [
+    "github",
+    "motivation",
+    "automation",
+    "slack",
+    "notifications",
+    "team",
+    "productivity"
+  ],
+  "author": "IPCM Orange Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZACK3458/votre-nom-utilisateur-ipcm-orange.git"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
