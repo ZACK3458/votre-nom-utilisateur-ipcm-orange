@@ -1,0 +1,74 @@
+name: Auto Maintain
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # hourly
+  workflow_dispatch:
+
+jobs:
+  maintain:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dev dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+
+      - name: Run ruff (fix)
+        run: |
+          if python -c "import pkgutil; exit(0 if pkgutil.find_loader('ruff') else 1)"; then
+            ruff format . || true
+            ruff check . --fix || true
+          else
+            echo 'ruff not available'
+          fi
+
+      - name: Run black (format)
+        run: |
+          if python -c "import pkgutil; exit(0 if pkgutil.find_loader('black') else 1)"; then
+            black . || true
+          else
+            echo 'black not available'
+          fi
+
+      - name: Run tests
+        run: |
+          python -m unittest discover -s tests -v
+
+      - name: Create branch if changes
+        id: create_branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b maintenance/auto-fix-$(date +%s)
+          git add -A
+          if git diff --staged --quiet; then
+            echo "no-changes" > result.txt
+            echo "no changes"
+          else
+            git commit -m "chore: automated code style fixes and lint autofixes"
+            git push --set-upstream origin HEAD
+            echo "changes-pushed" > result.txt
+          fi
+
+      - name: Create Pull Request
+        if: steps.create_branch.outcome == 'success'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: automated code style fixes and lint autofixes"
+          title: "Automated maintenance: style fixes"
+          body: "This PR was created automatically by the scheduled maintenance workflow. It includes formatting and lint autofixes."
+          base: main
+          branch: maintenance/auto-fix
