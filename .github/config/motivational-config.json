@@ -1,0 +1,58 @@
+{
+  "motivationalMessages": {
+    "push": [
+      "Excellent travail sur ce commit ! 🚀 Continue comme ça, tu es sur la bonne voie !",
+      "Superbe commit ! 💪 Chaque ligne de code nous rapproche du succès !",
+      "Bravo pour ce push ! 🎉 Ta détermination porte ses fruits !",
+      "Fantastique ! 🌟 Ce commit montre ton engagement et ta qualité de travail !",
+      "Formidable ! 👏 Continue à coder avec cette passion !"
+    ],
+    "pullRequestOpened": [
+      "Excellente PR ! 🎯 Ta contribution va faire la différence !",
+      "Superbe pull request ! 🔥 L'équipe va adorer ton travail !",
+      "Bravo pour cette PR ! 💡 Tes idées sont toujours pertinentes !",
+      "Fantastique contribution ! 🚀 Continue à proposer d'excellentes améliorations !",
+      "Magnifique travail ! ✨ Cette PR montre ton expertise !"
+    ],
+    "pullRequestMerged": [
+      "Pull request fusionnée ! 🎉 Allez, passe à la prochaine fonctionnalité !",
+      "Merge réussi ! 🚀 Ton code est maintenant en production, félicitations !",
+      "Parfait ! 💯 Une autre feature de qualité qui rejoint la base de code !",
+      "Excellent ! 🌟 Ton travail améliore constamment notre projet !",
+      "Bravo ! 🏆 Cette fusion marque encore un succès dans ton parcours !"
+    ],
+    "pullRequestClosed": [
+      "Pas de souci pour cette PR ! 💪 Chaque tentative nous rapproche de la perfection !",
+      "Continue ! 🚀 Les meilleures idées naissent souvent après plusieurs essais !",
+      "Garde le cap ! ⭐ Ton prochain PR sera encore meilleur !",
+      "Excellent esprit ! 🔥 L'innovation nécessite parfois plusieurs itérations !",
+      "Persévère ! 💡 Tes efforts constants mènent toujours au succès !"
+    ],
+    "review": [
+      "Merci pour cette review ! 👀 Ton œil expert améliore la qualité du code !",
+      "Excellente review ! 🔍 Tes commentaires sont toujours constructifs !",
+      "Superbe analyse ! 💡 Ton feedback aide toute l'équipe à progresser !",
+      "Bravo pour cette review ! 🎯 Ta rigueur est précieuse pour le projet !",
+      "Merci ! 🙏 Tes reviews maintiennent nos standards de qualité élevés !"
+    ]
+  },
+  "notifications": {
+    "slack": {
+      "enabled": true,
+      "webhookUrl": "env:SLACK_WEBHOOK_URL"
+    },
+    "email": {
+      "enabled": false,
+      "service": "sendgrid",
+      "apiKey": "env:SENDGRID_API_KEY",
+      "fromEmail": "motivation@company.com"
+    }
+  },
+  "settings": {
+    "enabledEvents": ["push", "pull_request", "pull_request_review"],
+    "enabledBranches": ["main", "master", "develop"],
+    "maxMessageLength": 280,
+    "includeCommitMessage": true,
+    "includeRepositoryInfo": true
+  }
+}

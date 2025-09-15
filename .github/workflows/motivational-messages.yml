@@ -1,0 +1,37 @@
+name: Motivational Messages
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    types: [opened, closed, merged]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  send-motivation:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Analyze event and send motivation
+      run: |
+        node .github/scripts/motivational-agent.js
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        GITHUB_EVENT_NAME: ${{ github.event_name }}
+        GITHUB_EVENT_ACTION: ${{ github.event.action }}
+        GITHUB_ACTOR: ${{ github.actor }}
+        GITHUB_REF: ${{ github.ref }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        PR_MERGED: ${{ github.event.pull_request.merged }}
+        PR_STATE: ${{ github.event.pull_request.state }}
+        COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
